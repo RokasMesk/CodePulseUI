@@ -6,28 +6,30 @@ import { Category } from '../models/category.model';
 import { environment } from '../../../../environments/environment';
 import { Certificate } from 'crypto';
 import { UpdateCategoryRequest } from '../models/update-category-request.model';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
 
-  constructor(private http: HttpClient) { }
-
+  constructor(private http: HttpClient,
+    private cookiService:CookieService) { }
+  getCategoryById(id: string): Observable<Category>{
+    return this.http.get<Category>(`${environment.apiBaseUrl}/api/Categories/${id}`);
+  }
   addCategory(model:AddCategoryRequest):Observable<void>{
-    return this.http.post<void>(`${environment.apiBaseUrl}/api/Categories`, model);
+    return this.http.post<void>(`${environment.apiBaseUrl}/api/Categories?addAuth=true`, model);
   }
   getAllCategories():Observable<Category[]>{
     return this.http.get<Category[]>(`${environment.apiBaseUrl}/api/Categories`);
   }
-  getCategoryById(id: string): Observable<Category>{
-    return this.http.get<Category>(`${environment.apiBaseUrl}/api/Categories/${id}`);
-  }
+  
   updateCategory(id:string, updateCategoryRequest: UpdateCategoryRequest):
    Observable<Category>{
-    return this.http.put<Category>(`${environment.apiBaseUrl}/api/Categories/${id}`, updateCategoryRequest);
+    return this.http.put<Category>(`${environment.apiBaseUrl}/api/Categories/${id}?addAuth=true`, updateCategoryRequest);
   }
   deleteCategory(id:string):Observable<Category>{
-    return this.http.delete<Category>(`${environment.apiBaseUrl}/api/Categories/${id}`);
+    return this.http.delete<Category>(`${environment.apiBaseUrl}/api/Categories/${id}?addAuth=true`);
   }
 }

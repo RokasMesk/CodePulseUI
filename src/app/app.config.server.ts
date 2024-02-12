@@ -5,7 +5,7 @@ import { provideMarkdown } from 'ngx-markdown';
 
 const serverConfig: ApplicationConfig = {
   providers: [
-    provideServerRendering(),
+    provideServerRendering()
   ]
 };
 
